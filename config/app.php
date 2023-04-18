@@ -209,6 +209,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'Snmp' => Ndum\Laravel\Snmp\Facades\Snmp::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

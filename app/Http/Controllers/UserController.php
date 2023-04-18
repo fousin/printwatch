@@ -16,6 +16,7 @@ class UserController extends Controller
             if($search){
                 $query->where('email', 'LIKE', "%{$search}%");
                 $query->orWhere('name', 'LIKE', "%{$search}%");
+                $query->orWhere('matricula', 'LIKE', "%{$search}%");
             }
         })->get();
 
@@ -39,13 +40,6 @@ class UserController extends Controller
         $user = User::create($data);
 
         return redirect()->route('users.index');
-        //return redirect()->route('users.show', $user->id);
-
-        //$user = new User;
-        //$user->name=$request->name;
-        //$user->email=$request->email;
-        //$user->password=$request->password;
-        //$user->save();
     }
 
     public function edit($id){
@@ -62,7 +56,7 @@ class UserController extends Controller
             return redirect()->route('users.index');
 
 
-        $data=$request->only('name','email');
+        $data=$request->only('name','sobrenome','email');
         if($request->password)
             $data['password']=bcrypt($request->password);
 
@@ -70,7 +64,7 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function destroy($id){
+    public function delete($id){
         if(!$user=User::find($id))
             return redirect()->route('users.index');
         

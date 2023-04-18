@@ -1,4 +1,4 @@
-FROM php:8.1.1-fpm
+FROM php:8.2.2-fpm
 
 # Arguments
 ARG user=carlos
@@ -6,19 +6,23 @@ ARG uid=1000
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git \
     curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip\
+    snmp \
+    libsnmp-dev
+
+    
+RUN apt-get update && apt-get install -y snmp
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
+RUN docker-php-ext-install snmp pdo_mysql mbstring exif pcntl bcmath gd sockets 
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

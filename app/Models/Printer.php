@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Printer extends Authenticatable{
+    use HasApiTokens, HasFactory, Notifiable;
+    public $timestamps = false;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'ip',
+        'name',
+        'marca',
+        'modelo',
+        'matricula'
+    ];
+    
+    public function getPrinters(string|null $search = ''){
+        $printers = $this->where(function ($query) use ($search){
+            if($search){
+                $query->where('name','LIKE', "%{$search}%");
+                $query->orWhere('ip','LIKE', "%{$search}%");
+                $query->orWhere('matricula','LIKE', "%{$search}%");
+            }
+        })->get();
+
+        return $printers;
+    }
+
+    public function tonners(){
+        return $this->hasMany(Tonner::class, 'printer_id', 'id');
+    }
+    
+}
+
