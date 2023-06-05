@@ -43,19 +43,14 @@ class SnmpController extends Controller {
         }
         
         foreach($oidValido as $oid){
-            $this->snmpget = 'snmpget ' . "$configs->version " . '-c ' . "$configs->comunity " . "$ipHost " . $oid;
+            $this->snmpget = 'snmpget ' . "-r1 $configs->version " . '-c ' . "$configs->comunity " . "$ipHost " . $oid;
             
             if(!strstr($this->snmpget, "#")){
                 if(!strstr($this->snmpget, "&&")){
                     if(!strstr($this->snmpget, "||")){
                         $validation = strpos($this->snmpget, "this->snmpget");
                         if(isset($validation)){
-                            try {
-                                $output = shell_exec($this->snmpget);
-                            } catch (Throwable $th) {
-                                $output = null;
-                            }
-                            
+                            $output = shell_exec($this->snmpget);
                         }
                     }
                 }
@@ -76,8 +71,6 @@ class SnmpController extends Controller {
             }
             
         }
-
-        return $dados;
+        return $dados; 
     }
-
 }

@@ -56,10 +56,10 @@
                 <a href="{{route('impressoras.index')}}" class="text-dark text-decoration-none"><span>PrintWatch</span></a>
             </div>  
             <div class="col-4 mt-4">
-                <span class="btn btn-sm btn-dark"> <= 20 % </span>
-                <span class="btn btn-sm btn-danger"> >= 20 % </span> 
-                <span class="btn btn-sm btn-warning"> >= 30 % </span>
-                <span class="btn btn-sm btn-success"> >= 40 % </span>  
+                <span class="btn btn-sm btn-dark"> Critico </span>
+                <span class="btn btn-sm btn-danger"> Emergencia </span> 
+                <span class="btn btn-sm btn-warning"> Alerta </span>
+                <span class="btn btn-sm btn-success"> saudável </span>  
             </div>
             <div class="col-3 mt-4">
                 <a href="{{route('impressoras.create')}}" class="btn btn-primary">Cadastrar Impressora</a>

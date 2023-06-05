@@ -16,7 +16,7 @@ services:
         networks:
             - printWatch
 
-    # nginx
+   # nginx
     nginx:
         image: nginx:alpine
         restart: unless-stopped

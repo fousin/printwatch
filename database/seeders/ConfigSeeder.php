@@ -16,8 +16,12 @@ class ConfigSeeder extends Seeder
     public function run()
     {   
         ConfigScript::create([
-        'comunity'=>'-c public',
-        'version'=>'-v2c'
+        'comunity'=>'public',
+        'version'=>'-v2c',
+        'critico'=>11, 
+        'emergencia'=>20, 
+        'aviso'=>30, 
+        'saudavel'=>40,
         ]);
     }
 }

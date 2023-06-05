@@ -25,7 +25,7 @@ class ConfigScriptController extends Controller{
     public function update(StoreUpdateConfigScriptRequest $request, $id){
         $config = ConfigScript::findOrFail($id);
         $config->update($request->only([
-            'comunity', 'version', 'marca', 'modelo'
+            'comunity', 'version', 'marca', 'modelo','critico', 'emergencia', 'aviso', 'saudavel'
         ]));
 
         return redirect()->route('configs.index');

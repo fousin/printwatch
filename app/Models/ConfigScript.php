@@ -11,6 +11,10 @@ class ConfigScript extends Model{
     
     protected $fillable = [
         'comunity',
-        'version'
+        'version',
+        'critico', 
+        'emergencia', 
+        'aviso', 
+        'saudavel'
     ];
 }

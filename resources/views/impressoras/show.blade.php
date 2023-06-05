@@ -25,11 +25,6 @@
                 <td>Marca/Modelo:</td>
                 <td>{{$printer ->marca}} | {{$printer ->modelo}}</td>
             </tr>
-
-            <tr>
-                <td>Tipo:</td>
-                <td>{{$printer ->toner}}</td>
-            </tr>
             <tr>
                 <td>Matricula:</td>
                 <td>{{$printer ->matricula}}</td>

@@ -1,4 +1,4 @@
-FROM php:8.2.2-fpm
+FROM php:8.1.1-fpm
 
 # Arguments
 ARG user=carlos
@@ -6,6 +6,7 @@ ARG uid=1000
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    git \
     curl \
     libpng-dev \
     libonig-dev \
@@ -15,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     snmp \
     libsnmp-dev
 
-    
 RUN apt-get update && apt-get install -y snmp
 
 # Clear cache

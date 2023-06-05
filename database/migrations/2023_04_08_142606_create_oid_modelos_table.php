@@ -26,6 +26,9 @@ return new class extends Migration
             $table->string('oid07')->nullable();//unidade de imagem
             $table->string('oid08')->nullable();//capacidade maxima do toner colorido
             $table->string('oid09')->nullable();//capacidade maxima do toner monocromático
+            $table->string('oid10')->nullable();//capacidade maxima do tambor
+            $table->string('oid11')->nullable();//capacidade maxima da unidade
+            $table->string('oid12')->nullable();//contador de impressão
             $table->timestamps();
         });
     }

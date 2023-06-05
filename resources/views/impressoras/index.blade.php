@@ -28,17 +28,16 @@
                                         </a>
                                         <tr>
                                             <th scope="col">Toner</th>
-                                            <th scope="col">barra</th>
-                                            <th scope="col">(%)</th>
+                                            <th scope="col">Volume Atual(%)</th>
+                                            
                                             <th scope="col"> Alert</th>
                                             
                                         </tr>
                                         @foreach ($printer->tonners as $tonner)
                                             <tr>
                                                 <td >{{$tonner->cor}}</td>
-                                                <td id="{{$printer->name.$tonner->cor}}">{{$tonner->volumeAtual}}</td>
+                                                <td > <img src="{{ asset('barras/barra'.$tonner->cor.'.gif') }}" height="12px" width="{{$tonner->volumeAtual}}" style="float: left;"> {{$tonner->volumeAtual}}</td>
                                                 <td >0</td>
-                                                <td >####</td>
                                             </tr>
                                         @endforeach
                                         

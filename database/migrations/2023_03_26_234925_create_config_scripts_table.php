@@ -17,6 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('comunity');
             $table->string('version');
+            $table->integer('critico');
+            $table->integer('emergencia');
+            $table->integer('aviso');
+            $table->integer('saudavel');
         });
     }
 

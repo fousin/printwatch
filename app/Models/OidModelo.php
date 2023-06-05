@@ -19,6 +19,9 @@ class OidModelo extends Model{
         'oid07',//unidade de imagem
         'oid08',//capacidade maxima do toner colorido
         'oid09',//capacidade maxima do toner monocromático
+        'oid10',//capacidade maxima do tambor
+        'oid11',//capacidade maxima da unidade
+        'oid12',//contador de impressão
     ];
 
     public function modelo(){

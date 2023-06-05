@@ -33,6 +33,13 @@
                         <input name="oid05" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid05??old('oid05')}}">
                     </label>
                 </label>
+
+                <label class="form-control" for="">Contador de Página
+                    <label class="form-control" for="" >Trabalhos realizados:
+                        <input name="oid12" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid12??old('oid12')}}">
+                    </label>
+                </label>
+
             </div>
             <div class="col-6">
                 <label class="form-control" for="">Imagem
@@ -48,15 +55,25 @@
 
 
                 <label class="form-control" for="">Capacidade maxima
-                    <label class="form-control" for="" >Coloridos:
+                    <label class="form-control" for="" >Toneres Coloridos:
                         <input name="oid08" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid08??old('oid08')}}">
                     </label>
 
-                    <label class="form-control" for="">monocromático:
+                    <label class="form-control" for="">Toner Monocromático:
                         <input name="oid09" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid09??old('oid09')}}">
+                    </label>
+
+
+                    <label class="form-control" for="" >Tambor Colorido:
+                        <input name="oid10" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid10??old('oid10')}}">
+                    </label>
+
+                    <label class="form-control" for="">Unidade de Imagem:
+                        <input name="oid11" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid11??old('oid11')}}">
                     </label>
                 </label>
 
+                
 
             </div>
         </div>

@@ -36,7 +36,7 @@ class OidsController extends Controller{
     public function update(Request $request, $id){
         $oids = $this->oids->firstWhere('marcas_id', $id);
         $dados = $request->only([
-            'oid01','oid02','oid03','oid04', 'oid05', 'oid06', 'oid07','oid08', 'oid09'
+            'oid01','oid02','oid03','oid04', 'oid05', 'oid06', 'oid07','oid08', 'oid09','oid10','oid11','oid12'
         ]);
         $oids->update($dados);
 

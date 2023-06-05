@@ -38,6 +38,10 @@ class ImpressoraController extends Controller{
         $printers = $this->printerBd->getPrinters(search: $request->get('search', ''));
         $styles = array();
         $estiloClasse = '';
+        $saudavel = $this->configs->pluck('saudavel')[0];
+        $aviso = $this->configs->pluck('aviso')[0];
+        $emergencia = $this->configs->pluck('emergencia')[0];
+        $critico = $this->configs->pluck('critico')[0];
         
         foreach($printers as $printer){
             $tipoToner = $this->modelosBd->firstWhere('modelo',$printer->modelo)->toner;
@@ -48,6 +52,19 @@ class ImpressoraController extends Controller{
                 $volumeAtual = $tonersValores[0]*100/$tonersValores[1];
                 $valores = ["capMax"=>$tonersValores[1], "volumeAtual"=>$volumeAtual];
                 $this->tonnersBd->where("printer_id", $printer->id)->update($valores);
+
+                if ($volumeAtual >= 35) {
+                    $estiloClasse = "btn-success";
+                } elseif ($volumeAtual<35 && $volumeAtual>=25) {
+                    $estiloClasse = "btn-warning";
+                } elseif ($volumeAtual<25 && $volumeAtual>=15) {
+                    $estiloClasse = "btn-danger";
+                } elseif ($volumeAtual<=10) {
+                    $estiloClasse = "btn-dark";
+                }
+
+                $styles[$printer->name] = $estiloClasse;
+
             }else{
                 //transforma os valores em porcentagem
                 foreach ($tonersValores as $tonerValor){
@@ -56,9 +73,9 @@ class ImpressoraController extends Controller{
                     }else{
                         $volumeAtual = $tonerValor;
                     }
-                    
-                    array_push($valores, $volumeAtual);
+                    array_push($valores, $volumeAtual);   
                 }
+
                 //encontra todos os toners coloridos da impressora
                 $toners = $this->tonnersBd->where("printer_id", $printer->id)->get();
         
@@ -69,22 +86,25 @@ class ImpressoraController extends Controller{
                     }else{
                         $valorToner = ["capMax" => 100, "volumeAtual" => $valores[$key]];
                     }
+                        
                     //atualiza
                     $this->tonnersBd->where("id", $toner->id)->where("printer_id", $printer->id)->update($valorToner);
-                    
-                    if(min($valores)>=40){
-                        $estiloClasse = 'btn-success';
-                    }else{
-                        if(min($valores)>=30 && min($valores)<=40){
-                            $estiloClasse = 'btn-warning';
+
+
+                    if (min($valores) >= 40) {
+                        $estiloClasse = "btn-success";
+                    } else{
+                        if (min($valores)<40 && min($valores)>=30) {
+                            $estiloClasse = "btn-warning";
                         }else{
-                            if(min($valores)>=20 && min($valores)<=30){
-                                $estiloClasse = 'btn-danger';
-                            }else{
-                                $estiloClasse = 'btn-dark';
-                            }  
+                            if (min($valores)<30 && min($valores)>=20 ) {
+                                $estiloClasse = "btn-danger";
+                            }elseif (min($valores)>=0 && min($valores)<20 )   {
+                                $estiloClasse = "btn-dark";
+                            }
                         }
                     }
+                     
                     $styles[$printer->name] = $estiloClasse;
                 }
             }
