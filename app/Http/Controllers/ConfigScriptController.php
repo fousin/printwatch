@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateConfigScriptRequest;
 use App\Models\ConfigScript;
-use App\Models\Marcas;
+use App\Models\Marca;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument;
 use Symfony\Component\Process\Process;

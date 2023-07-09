@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdatePrinterFormRequest;
 use App\Models\ConfigScript;
-use App\Models\Marcas;
+use App\Models\Marca;
 use App\Models\Modelos;
 use App\Models\OidModelo;
 use App\Models\Printer;
@@ -22,7 +22,7 @@ class ImpressoraController extends Controller{
     protected $snmpController;
     protected $configs;
     
-    public function __construct(Printer $printer, Toner $toner, Marcas $marcas, Modelos $modelos, OidModelo $modeloOidBd, SnmpController $snmp, ConfigScript $configs){
+    public function __construct(Printer $printer, Toner $toner, Marca $marcas, Modelos $modelos, OidModelo $modeloOidBd, SnmpController $snmp, ConfigScript $configs){
         $this->modeloOidBd = $modeloOidBd;
         $this->printerBd = $printer;
         $this->marcasBd = $marcas;

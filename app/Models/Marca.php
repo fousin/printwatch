@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Marcas extends Model{
+class Marca extends Model{
     use HasFactory;
     public $timestamps = false;
-
+    
     protected $fillable = [
         'marca'
     ];
 
-    public function novaMarca($marca, Marcas $marcaBd){
+    public function novaMarca($marca, Marca $marcaBd){
         //verifica se ja existe a marca
         $jaExisteMarca = $marcaBd->firstWhere('marca', $marca);
         if(isset($jaExisteMarca)){

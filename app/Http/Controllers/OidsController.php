@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Marcas;
+use App\Models\Marca;
 use App\Models\Modelos;
 use App\Models\Oid;
 use App\Http\Requests\OidRequest;
@@ -15,7 +15,7 @@ class OidsController extends Controller{
     protected $modelos;
     protected $oids;
 
-    public function __construct(Marcas $marcas, Modelos $modelos, Oid $oids){
+    public function __construct(Marca $marcas, Modelos $modelos, Oid $oids){
         $this->marcas = $marcas;
         $this->modelos = $modelos;
         $this->oids = $oids;
@@ -28,18 +28,36 @@ class OidsController extends Controller{
 
     public function edit($id){
         $marca = $this->marcas->find($id);
-        $oid = $this->oids->firstWhere('marcas_id', $id);
+        $oid = $this->oids->firstWhere('marca_id', $id);
         
         return view('configs.oids.edit',compact('marca', 'oid'));
     }
 
     public function update(Request $request, $id){
-        $oids = $this->oids->firstWhere('marcas_id', $id);
+        $oids = $this->oids->firstWhere('marca_id', $id);
         $dados = $request->only([
-            'oid01','oid02','oid03','oid04', 'oid05', 'oid06', 'oid07','oid08', 'oid09','oid10','oid11','oid12'
+            'oidTonerPreto',
+            'oidTonerCiano',
+            'oidTonerMagenta',
+            'oidTonerAmarelo',
+            'oidTonerMonocromatico',
+            'oidTamborImagem',
+            'oidUnidadeImagem',
+            'oidContadorPagina'
         ]);
         $oids->update($dados);
 
         return redirect()->back();
     }
 }
+
+/*
+'oidTonerPreto',
+'oidTonerCiano',
+'oidTonerMagenta',
+'oidTonerAmarelo',
+'oidTonerMonocromatico',
+'oidTamborImagem',
+'oidUnidadeImagem',
+'oidContadorPagina'
+*/

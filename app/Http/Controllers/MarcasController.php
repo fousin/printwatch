@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Marcas;
+use App\Models\Marca;
 use App\Models\Modelos;
 use App\Models\Oid;
 use App\Models\OidModelo;
@@ -14,7 +14,7 @@ class MarcasController extends Controller{
     protected $bdOids;
     protected $bdOidsModelo;
     
-    public function __construct(Marcas $marcas, Modelos $modelos, Oid $oids, OidModelo $oidsModelo){
+    public function __construct(Marca $marcas, Modelos $modelos, Oid $oids, OidModelo $oidsModelo){
         $this->bdMarcas = $marcas;
         $this->bdModelos = $modelos;
         $this->bdOids = $oids;

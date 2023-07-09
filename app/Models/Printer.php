@@ -45,7 +45,7 @@ class Printer extends Authenticatable{
     }
 
     public function marcas(){
-        return $this->hasOne(Marcas::class, 'marca_id', 'id');
+        return $this->hasOne(Marca::class, 'marca_id', 'id');
     }
 
     public function modelos(){

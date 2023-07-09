@@ -30,7 +30,7 @@ class Oid extends Model{
     }
 
     public function marca(){
-        return $this->belongsTo(Marcas::class);
+        return $this->belongsTo(Marca::class);
     }
 }
 

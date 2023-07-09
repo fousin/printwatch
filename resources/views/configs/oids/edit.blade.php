@@ -16,65 +16,42 @@
                 <label class="form-control" for="">Toners
                     <label class="form-control" for="" >OID Coloridos:
                         <label class="form-control" for="">Preto: 
-                            <input name="oid01" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid01??old('oid01')}}">
+                            <input name="oidTonerPreto" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidTonerPreto??old('oidTonerPreto')}}">
                         </label>
                         <label class="form-control" for="">Ciano: 
-                            <input name="oid02" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid02??old('oid02')}}">
+                            <input name="oidTonerCiano" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidTonerCiano??old('oidTonerCiano')}}">
                         </label>
                         <label class="form-control" for="">Magenta: 
-                            <input name="oid03" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid03??old('oid03')}}">
+                            <input name="oidTonerMagenta" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidTonerMagenta??old('oidTonerMagenta')}}">
                         </label>
                         <label class="form-control" for="">Amarelo: 
-                            <input name="oid04" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid04??old('oid04')}}">
+                            <input name="oidTonerAmarelo" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidTonerAmarelo??old('oidTonerAmarelo')}}">
                         </label>
                     </label>
 
                     <label class="form-control" for="">OID monocromático:
-                        <input name="oid05" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid05??old('oid05')}}">
+                        <input name="oidTonerMonocromatico" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidTonerMonocromatico??old('oidTonerMonocromatico')}}">
                     </label>
                 </label>
 
-                <label class="form-control" for="">Contador de Página
-                    <label class="form-control" for="" >Trabalhos realizados:
-                        <input name="oid12" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid12??old('oid12')}}">
-                    </label>
-                </label>
 
             </div>
             <div class="col-6">
                 <label class="form-control" for="">Imagem
                     <label class="form-control" for="" >Tambor de Imagem:
-                        <input name="oid06" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid06??old('oid06')}}">
+                        <input name="oidTamborImagem" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidTamborImagem??old('oidTamborImagem')}}">
                     </label>
 
                     <label class="form-control" for="">Unidade de Imagem:
-                        <input name="oid07" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid07??old('oid07')}}">
+                        <input name="oidUnidadeImagem" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidUnidadeImagem??old('oidUnidadeImagem')}}">
                     </label>
                 </label>
 
-
-
-                <label class="form-control" for="">Capacidade maxima
-                    <label class="form-control" for="" >Toneres Coloridos:
-                        <input name="oid08" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid08??old('oid08')}}">
-                    </label>
-
-                    <label class="form-control" for="">Toner Monocromático:
-                        <input name="oid09" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid09??old('oid09')}}">
-                    </label>
-
-
-                    <label class="form-control" for="" >Tambor Colorido:
-                        <input name="oid10" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid10??old('oid10')}}">
-                    </label>
-
-                    <label class="form-control" for="">Unidade de Imagem:
-                        <input name="oid11" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oid11??old('oid11')}}">
+                <label class="form-control" for="">Contador de Página
+                    <label class="form-control" for="" >Trabalhos realizados:
+                        <input name="oidContadorPagina" class="form-control" type="text" placeholder="0.0.0.0.0.0.0.0.0" value="{{$oid->oidContadorPagina??old('oidContadorPagina')}}">
                     </label>
                 </label>
-
-                
-
             </div>
         </div>
         <input class="btn btn-success" type="submit" value="Salvar">

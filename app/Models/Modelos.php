@@ -37,7 +37,7 @@ class Modelos extends Model{
 
 
     public function modelos(){
-        return $this->belongsTo(Marcas::class);
+        return $this->belongsTo(Marca::class);
     }
 
     public function oidModelos(){
