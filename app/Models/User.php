@@ -23,7 +23,6 @@ class User extends Authenticatable
         'sobrenome',
         'email',
         'password',
-        
     ];
 
     /**

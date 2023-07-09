@@ -2,7 +2,7 @@
 
 <div class="form-group">
     <label for="name">Nome:</label>
-    <input type="text" name="name" placeholder="DPT_XXXX" value="{{ $printer->name ?? old('name')}}" class="form-control" class="text-uppercase">
+    <input type="text" name="nome" placeholder="DPT_XXXX" value="{{ $printer->nome ?? old('nome')}}" class="form-control" class="text-uppercase">
 </div>
 
 <div class="form-group">

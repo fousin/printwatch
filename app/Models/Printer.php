@@ -18,16 +18,17 @@ class Printer extends Authenticatable{
      */
     protected $fillable = [
         'ip',
-        'name',
-        'marca',
-        'modelo',
-        'matricula'
+        'nome',
+        'marca_id',
+        'modelo_id',
+        'matricula',
+        'contador_paginas'
     ];
     
     public function getPrinters(string|null $search = ''){
         $printers = $this->where(function ($query) use ($search){
             if($search){
-                $query->where('name','LIKE', "%{$search}%");
+                $query->where('nome','LIKE', "%{$search}%");
                 $query->orWhere('ip','LIKE', "%{$search}%");
                 $query->orWhere('matricula','LIKE', "%{$search}%");
             }
@@ -36,8 +37,19 @@ class Printer extends Authenticatable{
         return $printers;
     }
 
-    public function tonners(){
-        return $this->hasMany(Tonner::class, 'printer_id', 'id');
+
+    
+    // relacionamentos 
+    public function toners(){
+        return $this->hasMany(Toner::class, 'printer_id', 'id');
+    }
+
+    public function marcas(){
+        return $this->hasOne(Marcas::class, 'marca_id', 'id');
+    }
+
+    public function modelos(){
+        return $this->hasOne(Modelos::class, 'modelo_id', 'id');
     }
     
 }

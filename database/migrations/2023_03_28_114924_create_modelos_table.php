@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('modelos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('marcas_id')->constrained('marcas', 'id');
+            $table->foreignId('marca_id')->constrained('marcas', 'id');
             $table->string('modelo');
             $table->string('toner');
             $table->string('imagem');

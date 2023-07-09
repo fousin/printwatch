@@ -17,10 +17,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ConfigSeeder::class,
             UsersSeeder::class,
-            MarcasSeeder::class,
-            OidsSeeder::class
+            
 
             /*
+            MarcasSeeder::class,
+            OidsSeeder::class
             ModelosSeeder::class,
             */
         ]);

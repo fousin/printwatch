@@ -10,19 +10,42 @@ class OidModelo extends Model{
 
     protected $fillable = [
         'modelo_id',
-        'oid01',//cor preto
-        'oid02',//cor ciano
-        'oid03',//cor magenta
-        'oid04',//cor amarelo
-        'oid05',//cor monocromático
-        'oid06',//tambor de imagem
-        'oid07',//unidade de imagem
-        'oid08',//capacidade maxima do toner colorido
-        'oid09',//capacidade maxima do toner monocromático
-        'oid10',//capacidade maxima do tambor
-        'oid11',//capacidade maxima da unidade
-        'oid12',//contador de impressão
+        'oidTonerPreto',
+        'oidTonerCiano',
+        'oidTonerMagenta',
+        'oidTonerAmarelo',
+        'oidTonerMonocromatico',
+        'oidTamborImagem',
+        'oidUnidadeImagem',
+        'oidContadorPagina'
     ];
+
+    public function novoOidModelo(OidModelo $oidModeloBd, Oid $oidBd, $tipoToner, $marcaId, $modeloId){
+        $oidExistente = $oidBd->firstWhere('marca_id', $marcaId);
+
+        $oidNovoModelo=[
+            'modelo_id' => $modeloId
+        ];
+
+        if(isset($oidExistente)){
+            if($tipoToner=="color"){
+                $oidNovoModelo += [
+                    'oidTonerPreto'=>$oidExistente->oidTonerPreto,
+                    'oidTonerCiano'=>$oidExistente->oidTonerCiano,
+                    'oidTonerMagenta'=>$oidExistente->oidTonerMagenta,
+                    'oidTonerAmarelo'=>$oidExistente->oidTonerAmarelo,
+                    'oidTamborImagem'=>$oidExistente->oidTamborImagem,
+                ];
+            }else{
+                $oidNovoModelo += [
+                    'oidTonerMonocromatico'=>$oidExistente->oidTonerMonocromatico,
+                    'oidUnidadeImagem'=>$oidExistente->oidUnidadeImagem,
+                ];
+            }
+            $oidNovoModelo += ['oidContadorPagina'=>$oidExistente->oidContadorPagina];
+        }
+        $oidModeloBd->insert($oidNovoModelo);
+    }
 
     public function modelo(){
         return $this->belongsTo(Modelos::class);

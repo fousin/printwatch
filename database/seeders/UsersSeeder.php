@@ -19,7 +19,7 @@ class UsersSeeder extends Seeder
         User::create([
             'name'=>'root',
             'sobrenome'=>'master',
-            'email'=>'andersoncarlos01@hotmail.com',
+            'email'=>'root@hotmail.com',
             'password' => Hash::make('12345678'),
         ]);
     }

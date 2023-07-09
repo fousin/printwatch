@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <td>Nome: </td>
-                <td>{{$printer ->name}}</td>
+                <td>{{$printer ->nome}}</td>
             </tr>
             <tr>
                 <td>IP:</td>
@@ -28,6 +28,10 @@
             <tr>
                 <td>Matricula:</td>
                 <td>{{$printer ->matricula}}</td>
+            </tr>
+            <tr>
+                <td>Contador:</td>
+                <td>{{$printer ->contador_paginas}}</td>
             </tr>
         </table>
 

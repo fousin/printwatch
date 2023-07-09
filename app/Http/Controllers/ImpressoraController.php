@@ -8,7 +8,7 @@ use App\Models\Marcas;
 use App\Models\Modelos;
 use App\Models\OidModelo;
 use App\Models\Printer;
-use App\Models\Tonner;
+use App\Models\Toner;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument;
 use Symfony\Component\Process\Process;
@@ -16,17 +16,17 @@ use Symfony\Component\Process\Process;
 class ImpressoraController extends Controller{
     protected $printerBd;
     protected $marcasBd;
-    protected $tonnersBd;
+    protected $tonersBd;
     protected $modelosBd;
     protected $modeloOidBd;
     protected $snmpController;
     protected $configs;
     
-    public function __construct(Printer $printer, Tonner $tonner, Marcas $marcas, Modelos $modelos, OidModelo $modeloOidBd, SnmpController $snmp, ConfigScript $configs){
+    public function __construct(Printer $printer, Toner $toner, Marcas $marcas, Modelos $modelos, OidModelo $modeloOidBd, SnmpController $snmp, ConfigScript $configs){
         $this->modeloOidBd = $modeloOidBd;
         $this->printerBd = $printer;
         $this->marcasBd = $marcas;
-        $this->tonnersBd = $tonner;
+        $this->tonersBd = $toner;
         $this->modelosBd = $modelos;
         $this->snmpController = $snmp;
         $this->configs = $configs;
@@ -34,7 +34,7 @@ class ImpressoraController extends Controller{
 
     public function index(Request $request){
         $marcas = $this->marcasBd->with('modelos')->get();
-        $printers = $this->printerBd->with('tonners')->get();
+        $printers = $this->printerBd->with('toners')->get();
         $printers = $this->printerBd->getPrinters(search: $request->get('search', ''));
         $styles = array();
         $estiloClasse = '';
@@ -51,7 +51,7 @@ class ImpressoraController extends Controller{
             if($tipoToner=='mono'){
                 $volumeAtual = $tonersValores[0]*100/$tonersValores[1];
                 $valores = ["capMax"=>$tonersValores[1], "volumeAtual"=>$volumeAtual];
-                $this->tonnersBd->where("printer_id", $printer->id)->update($valores);
+                $this->tonersBd->where("printer_id", $printer->id)->update($valores);
 
                 if ($volumeAtual >= 35) {
                     $estiloClasse = "btn-success";
@@ -77,7 +77,7 @@ class ImpressoraController extends Controller{
                 }
 
                 //encontra todos os toners coloridos da impressora
-                $toners = $this->tonnersBd->where("printer_id", $printer->id)->get();
+                $toners = $this->tonersBd->where("printer_id", $printer->id)->get();
         
                 foreach($toners as $key => $toner){
                     
@@ -88,7 +88,7 @@ class ImpressoraController extends Controller{
                     }
                         
                     //atualiza
-                    $this->tonnersBd->where("id", $toner->id)->where("printer_id", $printer->id)->update($valorToner);
+                    $this->tonersBd->where("id", $toner->id)->where("printer_id", $printer->id)->update($valorToner);
 
 
                     if (min($valores) >= 40) {
@@ -116,7 +116,6 @@ class ImpressoraController extends Controller{
         if(!$printer = $this->printerBd->find($id)){
             return redirect()->route('impressoras.index');
         }
-
         return view('impressoras.show', compact('printer'));
     }
 
@@ -130,30 +129,15 @@ class ImpressoraController extends Controller{
         $data = $request->only([
             'name', 'ip', 'marca', 'modelo', 'matricula', 
         ]);
-        
+        //cria a impressora
         $printer = $this->printerBd->create($data);
-
-        $tipoToner = $this->modelosBd->where('modelo', '=', $printer->modelo)->first();
-
-        // Criando os registros na tabela "tonners"
-        if($tipoToner->toner=='color'){   
-            $tonnersData = [
-                ['cor' => 'Preto', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-                ['cor' => 'Ciano', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-                ['cor' => 'Magenta', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-                ['cor' => 'Amarelo', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-            ];
-            $this->tonnersBd->insert($tonnersData);
-        }else{
-            // Criando os registros na tabela "tonners"
-            if($tipoToner->toner=='mono'){   
-                $tonnersData = [
-                    ['cor' => 'Monocormatico', 'capMax' => 15000, 'volumeAtual' => 15000, 'printer_id' => $printer->id],
-                ];
-                $this->tonnersBd->insert($tonnersData);
-            }
-        }
         
+        //recupera o tipo do toner
+        $tipoToner = $this->modelosBd->where('modelo', '=', $printer->modelo)->first();
+        
+        //cria o toner na tabela
+        $this->tonersBd->defineToner($tipoToner, $printer->id);
+
         return redirect()->route('impressoras.index');
     }
 
@@ -171,33 +155,9 @@ class ImpressoraController extends Controller{
         }
         $printer->update($request->all());
         
-        //remove os tonners antes de deletar a impressora
-        $tonners = $this->tonnersBd->where('printer_id', $id)->get();
-        foreach ($tonners as $tonner) {
-            $tonner->delete();
-        }
+        $novoTipoToner = $this->modelosBd->where('modelo', '=', $printer->modelo)->first();
 
-        $tipoToner = $this->modelosBd->where('modelo', '=', $printer->modelo)->first();
-
-        //novos tonners
-        // Criando os registros na tabela "tonners"
-        if($tipoToner->toner=='color'){
-            $tonnersData = [
-                ['cor' => 'Preto', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-                ['cor' => 'Ciano', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-                ['cor' => 'Magenta', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-                ['cor' => 'Amarelo', 'capMax' => 100, 'volumeAtual' => 100, 'printer_id' => $printer->id],
-            ];
-            $this->tonnersBd->insert($tonnersData);
-        }else{
-            // Criando os registros na tabela "tonners"
-            if($tipoToner->toner=='mono'){
-                $tonnersData = [
-                    ['cor' => 'Monocormatico', 'capMax' => 15000, 'volumeAtual' => 15000, 'printer_id' => $printer->id],
-                ];
-                $this->tonnersBd->insert($tonnersData);
-            }
-        }
+        $this->tonersBd->atualizaTipoToner($printer->id,$novoTipoToner);
 
         return redirect()->route('impressoras.index');
     }
@@ -206,11 +166,10 @@ class ImpressoraController extends Controller{
         if(!$printer = $this->printerBd->find($id)){
             return redirect()->route('impressoras.index');
         }
-
-        //remove os tonners antes de deletar a impressora
-        $tonners = $this->tonnersBd->where('printer_id', $id)->get();
-        foreach ($tonners as $tonner) {
-            $tonner->delete();
+        //remove os toners antes de deletar a impressora
+        $toners = $this->tonersBd->where('printer_id', $id)->get();
+        foreach ($toners as $toner) {
+            $toner->delete();
         }
         
         $printer->delete();

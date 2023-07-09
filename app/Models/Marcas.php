@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Marcas extends Model{
     use HasFactory;
@@ -13,12 +14,27 @@ class Marcas extends Model{
         'marca'
     ];
 
-    
+    public function novaMarca($marca, Marcas $marcaBd){
+        //verifica se ja existe a marca
+        $jaExisteMarca = $marcaBd->firstWhere('marca', $marca);
+        if(isset($jaExisteMarca)){
+            $marca_id = $jaExisteMarca->id;
+        }else{
+            $marcaNova = $marcaBd->create($marca);
+            $marca_id = $marcaNova->id;
+        }
+
+        return $marca_id;
+    }
+
+
+    //relacionamentos
+
     public function modelos(){
-        return $this->hasMany(Modelos::class, 'marcas_id', 'id');
+        return $this->hasMany(Modelos::class, 'marca_id', 'id');
     }
 
     public function oids(){
-        return $this->hasOne(Oid::class, 'marcas_id', 'id');
+        return $this->hasOne(Oid::class, 'marca_id', 'id');
     }
 }
