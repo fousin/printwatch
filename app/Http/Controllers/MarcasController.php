@@ -88,18 +88,25 @@ class MarcasController extends Controller{
     }
 
     public function delete($id){
+        //recupera dados da marca
         $marca = $this->bdMarcas->find($id);
-        $oids = $this->bdOids->firstWhere('marcas_id', $id);
-
+        //recupera todos os modelos relacionado a marca
         $modelos = $marca->modelos;
+        //recupera o oid relacionado a marca
+        $oids = $this->bdOids->firstWhere('marca_id', $id);
+
+        $oidsModelo = $this->bdOidsModelo;
         
         // Exclui todos os modelos associados à marca
-        foreach ($modelos as $modelo) {
-            
+        foreach ($modelos as $modelo) {    
+            //deleta o oid do modelo na tabela oidModelo
+            $oidsModelo->firstWhere('modelo_id',$modelo->id)->delete();
+            //deleta o modelo
             $modelo->delete();
         }
-        
+        //deleta o oid da marca
         $oids->delete();
+        //deleta a marca
         $marca->delete();
         return redirect()->route('marcas.index');
     }

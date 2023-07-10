@@ -5,10 +5,10 @@ use App\Models\ConfigScript;
 use App\Models\Modelos;
 use App\Models\OidModelo;
 use App\Models\Printer;
-use App\Models\Tonner;
+use App\Models\Toner;
 
 class SnmpController extends Controller {
-    protected $tonner;
+    protected $toner;
     protected $impressorasBd;
     protected $host;//nome ou ip
     protected $configsBd;
@@ -16,12 +16,12 @@ class SnmpController extends Controller {
     protected $modeloBd;
     protected $snmpget;
 
-    public function __construct(ConfigScript $config, Printer $impressoras, OidModelo $oidModelo, Tonner $tonner, Modelos $modelos){
+    public function __construct(ConfigScript $config, Printer $impressoras, OidModelo $oidModelo, Toner $toner, Modelos $modelos){
         $this->configsBd = $config;
         $this->modeloBd = $modelos;
         $this->impressorasBd = $impressoras;
         $this->oidModeloBd =  $oidModelo;
-        $this->tonner = $tonner;
+        $this->toner = $toner;
     }
 
     public function getTonersValue($id){

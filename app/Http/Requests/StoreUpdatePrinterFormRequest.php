@@ -17,7 +17,7 @@ class StoreUpdatePrinterFormRequest extends FormRequest
     {
         $id = $this->id;
         $rules =  [
-            'name' => [
+            'nome' => [
                 'required',
                 'string',
                 'max:15',

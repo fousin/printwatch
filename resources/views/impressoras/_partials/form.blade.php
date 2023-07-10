@@ -1,7 +1,7 @@
 @csrf
 
 <div class="form-group">
-    <label for="name">Nome:</label>
+    <label for="nome">Nome:</label>
     <input type="text" name="nome" placeholder="DPT_XXXX" value="{{ $printer->nome ?? old('nome')}}" class="form-control" class="text-uppercase">
 </div>
 

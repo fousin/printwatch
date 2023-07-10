@@ -11,12 +11,6 @@ class Toner extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $tonersBd;
-
-    public function __construct(Toner $toner){
-        $this->tonersBd = $toner;
-    }
-
     protected $fillable = [
         'printer_id',
         'cor',
@@ -27,11 +21,11 @@ class Toner extends Model
         return $this->belongsTo(Printer::class);
     }
 
-    public function defineToner($tipo, $printeId){     
+    public function defineToner(Toner $tonerBd, $tipo, $printeId){     
         if($tipo=='mono'){
             $toner = ["printer_id"=>$printeId,"cor"=>"monocromatico", "volumeAtual"=>0];
             //insert
-            $this->tonersBd->insert($toner);
+            $tonerBd->insert($toner);
 
         }else{
             $toner = [
@@ -41,18 +35,18 @@ class Toner extends Model
                 ["printer_id"=>$printeId,"cor"=>"amarelo", "volumeAtual"=>0]
         ];         
             //todo insert
-            $this->tonersBd->insert($toner);
+            $tonerBd->insert($toner);
         }
     }
 
-    public function atualizaTipoToner($printerId, $novoTipo){
+    public function atualizaTipoToner(Toner $tonerBd, $printerId, $novoTipo){
         //encontra todos os toners coloridos da impressora
-        $toners = $this->tonersBd->where("printer_id", $printerId)->get();
+        $toners = $tonerBd->where("printer_id", $printerId)->get();
         foreach ($toners as $toner) {
             $toner->delete();
         }
 
-        $this->defineToner($printerId, $novoTipo);
+        $this->defineToner($tonerBd, $printerId, $novoTipo);
 
     }
 }
