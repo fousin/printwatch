@@ -1,5 +1,5 @@
 .gitignore
-.env.example
+.env
 vendor/
 .docker/
 node_modules/

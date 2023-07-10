@@ -1,76 +1,100 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\ConfigScript;
 use App\Models\Modelos;
 use App\Models\OidModelo;
 use App\Models\Printer;
 use App\Models\Toner;
+use Exception;
+use OnurKose\SNMPWrapper\SNMPWrapper;
+
 
 class SnmpController extends Controller {
-    protected $toner;
-    protected $impressorasBd;
-    protected $host;//nome ou ip
-    protected $configsBd;
-    protected $oidModeloBd;
-    protected $modeloBd;
-    protected $snmpget;
 
-    public function __construct(ConfigScript $config, Printer $impressoras, OidModelo $oidModelo, Toner $toner, Modelos $modelos){
-        $this->configsBd = $config;
-        $this->modeloBd = $modelos;
-        $this->impressorasBd = $impressoras;
-        $this->oidModeloBd =  $oidModelo;
-        $this->toner = $toner;
-    }
+    public function atualizaToners($printers, $oids, $modelos, $tonersBd){
+        $snmp = new SNMPWrapper();
+        $valorToner = array();
+        foreach($printers as $printer){
+            $oidModelo = $oids->firstWhere('modelo_id', $printer->modelo_id);
+            $modeloTonerPrinter = $modelos->firstWhere('marca_id', $printer->marca_id);
+            $snmp->setHost($printer->ip, 'public');
 
-    public function getTonersValue($id){
-        $configs = $this->configsBd->first();
-        $impressora = $this->impressorasBd->find($id);
-        $ipHost = $impressora->ip;
-        $modeloImpressora = $impressora->modelo;
-        $idModeloImpressora = $this->modeloBd->firstWhere("modelo", $modeloImpressora)->id;
-        $oidModelo = $this->oidModeloBd->firstWhere("modelo_id", $idModeloImpressora);
-        $oidValido = array();
-        $dados = array();
+            if($modeloTonerPrinter->toner == 'mono'){
 
-        //estatico 9 campos na tabela id
-        for ($i = 1; $i <= 9; $i++) {
-            $campo_oid = 'oid'.str_pad($i, 2, "0", STR_PAD_LEFT);
-            if (isset($oidModelo->$campo_oid)) {
-                array_push($oidValido, $oidModelo->$campo_oid);
-            }
-        }
-        
-        foreach($oidValido as $oid){
-            $this->snmpget = 'snmpget ' . "-r1 $configs->version " . '-c ' . "$configs->comunity " . "$ipHost " . $oid;
-            
-            if(!strstr($this->snmpget, "#")){
-                if(!strstr($this->snmpget, "&&")){
-                    if(!strstr($this->snmpget, "||")){
-                        $validation = strpos($this->snmpget, "this->snmpget");
-                        if(isset($validation)){
-                            $output = shell_exec($this->snmpget);
-                        }
-                    }
+                try{
+                    $valorToner = $snmp->get($oidModelo->oidTonerMonocromatico);
+                    $percentTonerMonocromatico = $valorToner['.'.$oidModelo->oidTonerMonocromatico]/150;
+
+                    $tonerPrinterAtual = $tonersBd->where('printer_id', $printer->id)->where('cor','monocromatico')->first(); 
+                    $data['volumeAtual'] = $percentTonerMonocromatico;
+                    //atualiza volume do toner monocromatico
+                    $tonerPrinterAtual->update($data);
+
+                }catch(Exception $e){
+                    $percentTonerMonocromatico = 0;
                 }
+                $tonerPrinterAtual = $tonersBd->where('printer_id', $printer->id)->where('cor','monocromatico')->first(); 
+                $data['volumeAtual'] = $percentTonerMonocromatico;
+                //atualiza volume do toner monocromatico
+                $tonerPrinterAtual->update($data);
+
+                try{
+                    $valorUnidade = $snmp->get($oidModelo->oidUnidadeImagem);
+                    $percentUnidade = $valorUnidade['.'.$oidModelo->oidUnidadeImagem]/300;
+                }catch(Exception $e){
+                    $percentUnidade = 0;
+                }
+
+                $unidadePrinterAtual = $tonersBd->where('printer_id', $printer->id)->where('cor','unidade')->first(); 
+                $data['volumeAtual'] = $percentUnidade;
+                ///atualiza volume da unidade de imagem
+                $unidadePrinterAtual->update($data);
+
+                try{
+                    $valorTotalPaginas = $snmp->get($oidModelo->oidContadorPagina);
+                    $totalPaginas['contador_paginas'] = $valorTotalPaginas['.'.$oidModelo->oidContadorPagina];
+                }catch(Exception $e){
+                    $totalPaginas['contador_paginas'] = 0;
+                }
+                $printer->update($totalPaginas);
+                
+
+            }else{
+                try{
+                    $valorToner['preto'] = $snmp->get($oidModelo->oidTonerPreto)['.'.$oidModelo->oidTonerPreto];
+                    $valorToner['ciano'] = $snmp->get($oidModelo->oidTonerCiano)['.'.$oidModelo->oidTonerCiano];
+                    $valorToner['magenta'] = $snmp->get($oidModelo->oidTonerMagenta)['.'.$oidModelo->oidTonerMagenta];
+                    $valorToner['amarelo'] = $snmp->get($oidModelo->oidTonerAmarelo)['.'.$oidModelo->oidTonerAmarelo];
+                }catch(Exception $e){
+                    $valorToner['preto'] = 0;
+                    $valorToner['ciano'] = 0;
+                    $valorToner['magenta'] = 0;
+                    $valorToner['amarelo'] = 0;
+                }
+
+                $tonersPrinterAtual = $tonersBd->where('printer_id', $printer->id);
+
+                foreach($tonersPrinterAtual as $tonerPrinterAtual){
+                    $valorAtual['volumeAtual'] = $valorToner[$tonerPrinterAtual->cor];
+                    $tonerPrinterAtual->update($valorAtual);
+                }
+
+                //tambor
+                //$valorUnidade = $snmp->get($oidModelo->oidTamborImagem)['.'.$oidModelo->oidTamborImagem];
+                
+                try{
+                    $valorTotalPaginas = $snmp->get($oidModelo->oidContadorPagina)['.'.$oidModelo->oidContadorPagina];
+                }catch(Exception $e){
+                    $valorTotalPaginas = 0;
+                }
+                
+
             }
 
-            if($output == "" || $output == null){
-                $output = 1;
-            }else{
-                $output = explode(":",$output);
-            }
 
-            if (isset($output[1])){
-                $output[1] = str_replace("\n", "", $output[1]);
-                $output[1] = str_replace(" ", "", $output[1]);
-                array_push($dados, $output[1]);
-            }else{
-                array_push($dados, $output);
-            }
-            
+
         }
-        return $dados; 
+            
+
     }
 }

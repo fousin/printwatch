@@ -4,7 +4,6 @@
 
 @section('content')
 
-
 <hr>
 <div class="row mt-4 d-flex justify-content-center">
     <div class="col-9 row ">

@@ -6,37 +6,38 @@
     @include('includes.search-printer-label')
     <div class="row">
         <div class="col-12 row">
-            @foreach ($configs as $config)
+           
+           
             <div class="col-8">
                 
-                <form action="{{route('configs.update', $config->id)}}" method="POST">
+                <form action="{{route('configs.update', $configs[0]->id)}}" method="POST">
                     @csrf
                     @method('PUT')
                     
                     <div class="form-group">
                         <label for="comunity" class="form-control">Comunidade: 
-                            <input class="form-control" type="text" name="comunity" value="{{$config->comunity? $config->comunity : '' }}">
+                            <input class="form-control" type="text" name="comunity" value="{{$configs[0]->comunity? $configs[0]->comunity : '' }}">
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label for="version" class="form-control">Versão SNMP: 
-                            <input class="form-control" type="text" name="version" value="{{$config->version}}">
+                            <input class="form-control" type="text" name="version" value="{{$configs[0]->version}}">
                         </label>
                     </div>
                     
                     <div class="form-group"> Alertas:
                         <label for="version" class="form-control">Critico: 
-                            <input class="form-control" type="text" name="critico" value="{{$config->critico}}">
+                            <input class="form-control" type="text" name="critico" value="{{$configs[0]->critico}}">
                         </label>
                         <label for="version" class="form-control">Emergencia: 
-                            <input class="form-control" type="text" name="emergencia" value="{{$config->emergencia}}">
+                            <input class="form-control" type="text" name="emergencia" value="{{$configs[0]->emergencia}}">
                         </label>
                         <label for="version" class="form-control">Aviso: 
-                            <input class="form-control" type="text" name="aviso" value="{{$config->aviso}}">
+                            <input class="form-control" type="text" name="aviso" value="{{$configs[0]->aviso}}">
                         </label>
                         <label for="version" class="form-control">Saudavel: 
-                            <input class="form-control" type="text" name="saudavel" value="{{$config->saudavel}}">
+                            <input class="form-control" type="text" name="saudavel" value="{{$configs[0]->saudavel}}">
                         </label>
                     </div>
                    
@@ -50,6 +51,6 @@
                 <a href="{{route('oids.index')}}">OIDS</a>
             </div>
         </div>
-        @endforeach
+        
     </div>
 @endsection

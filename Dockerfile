@@ -2,6 +2,7 @@ FROM php:8.1.1-fpm
 
 # Arguments
 ARG user=carlos
+ARG password=bankai2010
 ARG uid=1000
 
 # Install system dependencies
@@ -14,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip\
     snmp \
+    snmpd \
     libsnmp-dev
 
 RUN apt-get update && apt-get install -y snmp

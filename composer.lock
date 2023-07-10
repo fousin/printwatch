@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab4df688c24a3cc13de66162499b563b",
+    "content-hash": "28b4cafd873ff5f74e6599d9bf154245",
     "packages": [
         {
             "name": "brick/math",
@@ -2456,6 +2456,47 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "onurkose/snmp-wrapper",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/onurkose/SNMPWrapper.git",
+                "reference": "57478227f85ed85bf293b5f8012d84036117262f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/onurkose/SNMPWrapper/zipball/57478227f85ed85bf293b5f8012d84036117262f",
+                "reference": "57478227f85ed85bf293b5f8012d84036117262f",
+                "shasum": ""
+            },
+            "require": {
+                "nelisys/snmp": "^1.0",
+                "php": ">=7.0.0"
+            },
+            "type": "laravel",
+            "autoload": {
+                "psr-4": {
+                    "OnurKose\\SNMPWrapper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Onur Kose",
+                    "email": "kose.onur@gmail.com"
+                }
+            ],
+            "description": "Laravel SNMP wrapper for Nelisys/Snmp class",
+            "support": {
+                "issues": "https://github.com/onurkose/SNMPWrapper/issues",
+                "source": "https://github.com/onurkose/SNMPWrapper/tree/master"
+            },
+            "time": "2017-12-26T19:01:30+00:00"
         },
         {
             "name": "phpoption/phpoption",
