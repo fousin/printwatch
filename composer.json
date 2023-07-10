@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.7",
         "ndum/laravel-snmp": "^1.8",
         "nelisys/snmp": "^1.0",
+        "onurkose/snmp-wrapper": "^1.1",
         "simpod/php-snmp": "^0.2.2"
     },
     "require-dev": {

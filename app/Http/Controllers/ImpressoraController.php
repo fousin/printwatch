@@ -10,8 +10,6 @@ use App\Models\OidModelo;
 use App\Models\Printer;
 use App\Models\Toner;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\MockObject\Stub\ReturnArgument;
-use Symfony\Component\Process\Process;
 
 class ImpressoraController extends Controller{
     protected $printerBd;
@@ -40,11 +38,20 @@ class ImpressoraController extends Controller{
         $this->configs = $configs;
     }
    
-
+    
     public function index(Request $request){
         $printers = $this->printerBd->with('toners')->get();
         $printers = $this->printerBd->getPrinters(search: $request->get('search', ''));
         $marcas = $this->marcasBd->with('modelos')->get();
+
+        //
+        $oids = $this->modeloOidBd->get();
+        $modelos = $this->modelosBd->get();
+        $toners = $this->tonersBd->get();
+        //
+
+
+        $this->snmpController->atualizaToners($printers, $oids, $modelos, $toners);
 
         return view('impressoras.index', compact('printers', 'marcas'));
     }
@@ -82,8 +89,8 @@ class ImpressoraController extends Controller{
         $printer = $this->printerBd->create($data);
         
         //recupera o tipo do toner
-        $tipoToner = $this->modelosBd->where('modelo', '=', $printer->modelo)->first();
-        
+        $tipoToner = $this->modelosBd->firstWhere('id', $printer->modelo_id)->toner;
+
         //cria o toner na tabela
         $this->tonersBd->defineToner($this->tonersBd, $tipoToner, $printer->id);
 
