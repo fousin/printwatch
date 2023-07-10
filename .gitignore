@@ -1,5 +1,6 @@
 .gitignore
-.env.example
+.env
 vendor/
 .docker/
 node_modules/
+app/Http/Controllers/impressoraController copy.php

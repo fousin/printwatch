@@ -46,8 +46,8 @@ class SnmpController extends Controller {
             $this->snmpget = 'snmpget ' . "-r1 $configs->version " . '-c ' . "$configs->comunity " . "$ipHost " . $oid;
             
             if(!strstr($this->snmpget, "#")){
-                if(!strstr($this->snmpget, "&&")){
-                    if(!strstr($this->snmpget, "||")){
+                if(!strstr($this->snmpget, "&")){
+                    if(!strstr($this->snmpget, "|")){
                         $validation = strpos($this->snmpget, "this->snmpget");
                         if(isset($validation)){
                             $output = shell_exec($this->snmpget);
