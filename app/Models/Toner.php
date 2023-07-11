@@ -22,6 +22,7 @@ class Toner extends Model
     }
 
     public function defineToner(Toner $tonerBd, $tipo, $printeId){     
+
         if($tipo=='mono'){
             $toner = [
                 ["printer_id"=>$printeId, "cor"=>"monocromatico", "volumeAtual"=>0],
@@ -29,15 +30,17 @@ class Toner extends Model
             ];
         }else{
             $toner = [
-                ["printer_id"=>$printeId,"cor"=>"preto", "volumeAtual"=>0],
-                ["printer_id"=>$printeId,"cor"=>"ciano", "volumeAtual"=>0],
-                ["printer_id"=>$printeId,"cor"=>"magenta", "volumeAtual"=>0],
-                ["printer_id"=>$printeId,"cor"=>"amarelo", "volumeAtual"=>0]
+                ["cor"=>"preto", "printer_id"=>$printeId, "volumeAtual"=>0],
+                ["cor"=>"ciano", "printer_id"=>$printeId, "volumeAtual"=>0],
+                ["cor"=>"magenta", "printer_id"=>$printeId, "volumeAtual"=>0],
+                ["cor"=>"amarelo", "printer_id"=>$printeId, "volumeAtual"=>0]
             ];         
         }
 
         //todo insert
         $tonerBd->insert($toner);
+        
+        
     }
 
     public function atualizaTipoToner(Toner $tonerBd, $printerId, $novoTipo){
@@ -46,8 +49,7 @@ class Toner extends Model
         foreach ($toners as $toner) {
             $toner->delete();
         }
-
-        $this->defineToner($tonerBd, $printerId, $novoTipo);
-
+        $this->defineToner($tonerBd, $novoTipo, $printerId);
+        
     }
 }

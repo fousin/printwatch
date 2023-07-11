@@ -130,12 +130,21 @@ class ImpressoraController extends Controller{
         if(!$printer = $this->printerBd->find($id)){
             return redirect()->route('impressoras.index');
         }
-        $printer->update($request->all());
+        //todo request passar o id da marca inves o nome
+        //todo request passar o id do modelo inves o nome
+        $dados = $request->only('nome', 'ip', 'marca', 'modelo', 'matricula');
+        $novoTipoToner = $this->modelosBd->where('modelo', $dados['modelo'])->first();
+
+        $novosDados['nome'] = $dados['nome']; 
+        $novosDados['ip'] = $dados['ip']; 
+        $novosDados['marca_id'] = $this->marcasBd->firstWhere('marca',$dados['marca'])->id;
+        $novosDados['modelo_id'] = $this->modelosBd->firstWhere('modelo',$dados['modelo'])->id;
+        $novosDados['matricula'] = $dados['matricula']; 
+
+        $printer->update($novosDados);
+
+        $this->tonersBd->atualizaTipoToner($this->tonersBd, $printer->id, $novoTipoToner->toner);
         
-        $novoTipoToner = $this->modelosBd->where('modelo', '=', $printer->modelo)->first();
-
-        $this->tonersBd->atualizaTipoToner($this->tonersBd, $printer->id, $novoTipoToner);
-
         return redirect()->route('impressoras.index');
     }
 
