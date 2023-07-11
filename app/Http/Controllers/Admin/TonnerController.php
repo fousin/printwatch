@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\SnmpController;
 use App\Models\{
     Printer,
-    Tonner
+    Toner
 };
 use Illuminate\Http\Request;
 
-class TonnerController extends Controller{
-    protected $tonner;
+class TonerController extends Controller{
+    protected $toner;
     protected $printer;
     
-    public function __construct(Tonner $tonner, Printer $printer){
-        $this->tonner = $tonner;
+    public function __construct(Toner $toner, Printer $printer){
+        $this->toner = $toner;
         $this->printer = $printer;
     }
 
@@ -23,9 +23,9 @@ class TonnerController extends Controller{
         if(!$printer = $this->printer->find($printerId)){
             return redirect()->back();
         }
-        $tonners = $printer->tonners()->get();
+        $toners = $printer->toners()->get();
 
-        return view('impressoras.tonners.indexColorida', compact('printer', 'tonners'));
+        return view('impressoras.toners.indexColorida', compact('printer', 'toners'));
     }
 
     public function create($printerId){
@@ -33,16 +33,16 @@ class TonnerController extends Controller{
             return redirect()->back();
         }
 
-        return view('impressoras.tonners.create', compact('printer'));
+        return view('impressoras.toners.create', compact('printer'));
     }
 
     public function store(Request $request, $printerId){
         if(!$printer = $this->printer->find($printerId)){
             return redirect()->back();
         }
-        $printer->Tonners()->create($request->all());
+        $printer->Toners()->create($request->all());
 
-        return redirect()->route('tonners.indexColorida',$printer->id);
+        return redirect()->route('toners.indexColorida',$printer->id);
     }
 
     

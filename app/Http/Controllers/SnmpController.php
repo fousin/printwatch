@@ -1,10 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Modelos;
-use App\Models\OidModelo;
-use App\Models\Printer;
-use App\Models\Toner;
 use Exception;
 use OnurKose\SNMPWrapper\SNMPWrapper;
 
@@ -21,37 +17,13 @@ class SnmpController extends Controller {
 
             if($modeloTonerPrinter->toner == 'mono'){
 
-        //estatico 9 campos na tabela id
-        for ($i = 1; $i <= 9; $i++) {
-            $campo_oid = 'oid'.str_pad($i, 2, "0", STR_PAD_LEFT);
-            if (isset($oidModelo->$campo_oid)) {
-                array_push($oidValido, $oidModelo->$campo_oid);
-            }
-        }
-        
-        foreach($oidValido as $oid){
-            $this->snmpget = 'snmpget ' . "-r1 $configs->version " . '-c ' . "$configs->comunity " . "$ipHost " . $oid;
-            
-            if(!strstr($this->snmpget, "#")){
-                if(!strstr($this->snmpget, "&")){
-                    if(!strstr($this->snmpget, "|")){
-                        $validation = strpos($this->snmpget, "this->snmpget");
-                        if(isset($validation)){
-                            $output = shell_exec($this->snmpget);
-                        }
-                    }
                 try{
                     $valorToner = $snmp->get($oidModelo->oidTonerMonocromatico);
                     $percentTonerMonocromatico = $valorToner['.'.$oidModelo->oidTonerMonocromatico]/150;
-
-                    $tonerPrinterAtual = $tonersBd->where('printer_id', $printer->id)->where('cor','monocromatico')->first(); 
-                    $data['volumeAtual'] = $percentTonerMonocromatico;
-                    //atualiza volume do toner monocromatico
-                    $tonerPrinterAtual->update($data);
-
                 }catch(Exception $e){
                     $percentTonerMonocromatico = 0;
                 }
+                
                 $tonerPrinterAtual = $tonersBd->where('printer_id', $printer->id)->where('cor','monocromatico')->first(); 
                 $data['volumeAtual'] = $percentTonerMonocromatico;
                 //atualiza volume do toner monocromatico
@@ -63,10 +35,11 @@ class SnmpController extends Controller {
                 }catch(Exception $e){
                     $percentUnidade = 0;
                 }
-
+                
                 $unidadePrinterAtual = $tonersBd->where('printer_id', $printer->id)->where('cor','unidade')->first(); 
                 $data['volumeAtual'] = $percentUnidade;
-                ///atualiza volume da unidade de imagem
+
+                //atualiza volume da unidade de imagem
                 $unidadePrinterAtual->update($data);
 
                 try{

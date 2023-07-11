@@ -7,11 +7,11 @@
 
 <table class="table-striped table mb-5 text-center ">
     <tbody>
-        @foreach($tonners as $tonner)
+        @foreach($toners as $toner)
             <tr>
-                <td>{{$tonner->cor}}</td>
-                <td id="barra{{$tonner->cor}}">####</td>
-                <td>{{$tonner->volumeAtual}}</td>
+                <td>{{$toner->cor}}</td>
+                <td id="barra{{$tnner->cor}}">####</td>
+                <td>{{$toner->volumeAtual}}</td>
             </tr>  
         @endforeach  
     </tbody>

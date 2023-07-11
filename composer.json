@@ -10,10 +10,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "ndum/laravel-snmp": "^1.8",
-        "nelisys/snmp": "^1.0",
-        "onurkose/snmp-wrapper": "^1.1",
-        "simpod/php-snmp": "^0.2.2"
+        "onurkose/snmp-wrapper": "^1.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

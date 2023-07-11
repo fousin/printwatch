@@ -19,9 +19,10 @@
                                 <div class="col-sm-12 col-md-6 col-lg-4 text-center ">
                                     <table class="table-striped table mb-5 text-center ">
                                         
-                                        <a href="{{ route('impressoras.show', $printer->id) }}" class="btn btn-dark">
+                                        <a href="{{ route('impressoras.show', $printer->id) }}" class="btn btn-{{$statusPrinter[$printer->nome]}}">
                                             {{$printer->nome}} 
                                         </a>
+
                                         <tr>
                                             <th scope="col">Toner</th>
                                             <th scope="col">Volume Atual(%)</th>

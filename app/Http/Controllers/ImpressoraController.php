@@ -41,19 +41,39 @@ class ImpressoraController extends Controller{
     
     public function index(Request $request){
         $printers = $this->printerBd->with('toners')->get();
-        $printers = $this->printerBd->getPrinters(search: $request->get('search', ''));
-        $marcas = $this->marcasBd->with('modelos')->get();
-
         //
         $oids = $this->modeloOidBd->get();
         $modelos = $this->modelosBd->get();
         $toners = $this->tonersBd->get();
         //
 
+        //$this->snmpController->atualizaToners($printers, $oids, $modelos, $toners);
 
-        $this->snmpController->atualizaToners($printers, $oids, $modelos, $toners);
+        $statusPrinter = array();
+        $menorValor = 100;
+        foreach($printers as $printer){
+            foreach($printer->toners as $toner){
+                if($toner->volumeAtual<$menorValor){
+                    $menorValor = $toner->volumeAtual;
+                }
+            }
+            if($menorValor>=40){
+                $statusPrinter[$printer->nome] = 'success';
+            }elseif($menorValor>=30 & $menorValor<40){
+                $statusPrinter[$printer->nome] = 'warning';
+            }elseif($menorValor>=20 & $menorValor<30){
+                $statusPrinter[$printer->nome] = 'danger';
+            }elseif($menorValor<=19){
+                $statusPrinter[$printer->nome] = 'dark';
+            }
 
-        return view('impressoras.index', compact('printers', 'marcas'));
+
+        }
+
+        $printers = $this->printerBd->getPrinters(search: $request->get('search', ''));
+        $marcas = $this->marcasBd->with('modelos')->get();
+
+        return view('impressoras.index', compact('printers', 'marcas', 'statusPrinter'));
     }
     
     public function show($id){
@@ -98,10 +118,11 @@ class ImpressoraController extends Controller{
     }
 
     public function edit($id){
-        $marcas = $this->marcasBd->get();
         if(!$printer = $this->printerBd->find($id)){
             return redirect()->route('impressoras.index');
         }
+        $marcas = $this->marcasBd->get();
+
         return view('impressoras.edit', compact('printer', 'marcas'));
     }
 

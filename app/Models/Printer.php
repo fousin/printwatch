@@ -36,8 +36,6 @@ class Printer extends Authenticatable{
 
         return $printers;
     }
-
-
     
     // relacionamentos 
     public function toners(){
